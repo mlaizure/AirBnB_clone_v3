@@ -11,6 +11,7 @@ from models.place import Place
 from models.review import Review
 from models.state import State
 from models.user import User
+import models
 
 classes = {"Amenity": Amenity, "BaseModel": BaseModel, "City": City,
            "Place": Place, "Review": Review, "State": State, "User": User}
@@ -72,20 +73,14 @@ class FileStorage:
     def get(self, cls, id):
         """[This method retrives one object]
         """
-        key = cls + "." + id
-
+        key = str(cls.__name__) + '.' + id
         return self.__objects.get(key)
 
     def count(self, cls=None):
         """[Returns the count of objects]
         """
-        count = 0
-
         if cls is not None:
-            for obj in self.__objects.items():
-                if cls == obj.__class__ or cls == obj.__class__.__name__:
-                    count += 1
+            objs = models.storage.all(cls)
         else:
-            count = len(self.__objects)
-
-        return count
+            objs = models.storage.all()
+        return len(objs)
