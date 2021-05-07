@@ -31,6 +31,6 @@ def count():
     count_dict["places"] = storage.count(Place)
     count_dict["reviews"] = storage.count(Review)
     count_dict["users"] = storage.count(User)
-    count_dict["state"] = storage.count(State)
+    count_dict["states"] = storage.count(State)
 
     return count_dict
