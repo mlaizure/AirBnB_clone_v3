@@ -79,13 +79,14 @@ class DBStorage:
         """[Gets instance of a class]
         """
         obj = self.__session.query(cls).get(id)
+        print(obj)
         return obj
 
     def count(self, cls=None):
         """[Keeps a count of the numbet of objects]
         """
         if cls is not None:
-            obj = models.storage.all(cls)
+            obj = self.all(cls)
         else:
-            obj = models.storage.all()
+            obj = self.all()
         return len(obj)
