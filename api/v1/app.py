@@ -20,11 +20,11 @@ def teardown(self):
 
 
 @app.errorhandler(404)
-def page_not_found():
+def page_not_found(self):
     """ This is an error handler that returns a JSON
         formated 404 status code
     """
-    return jsonify(error='Not found')
+    return jsonify(error='Not found'), 404
 
 HOST = os.environ.get('HBNB_API_HOST')
 if not HOST:
