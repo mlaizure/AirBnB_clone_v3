@@ -2,7 +2,7 @@
 """ Basic flask application
 """
 
-from flask import Flask, blueprints
+from flask import Flask, blueprints, jsonify
 from models import storage
 from api.v1.views import app_views
 import os
@@ -11,11 +11,20 @@ app = Flask(__name__)
 
 app.register_blueprint(app_views)
 
+
 @app.teardown_appcontext
 def teardown(self):
     """This calls storage.close
     """
     storage.close()
+
+
+@app.errorhandler(404)
+def page_not_found():
+    """ This is an error handler that returns a JSON
+        formated 404 status code
+    """
+    return jsonify(error='Not found')
 
 HOST = os.environ.get('HBNB_API_HOST')
 if not HOST:
