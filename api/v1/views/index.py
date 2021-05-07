@@ -21,11 +21,10 @@ def status():
     return jsonify(status='OK')
 
 
-@app.route('/api/v1/stats')
+@app_views.route('/stats')
 def count():
     """ It returns the count for each object in DB
     """
-
     count_dict = {}
     count_dict["amenities"] = storage.count(Amenity)
     count_dict["cities"] = storage.count(City)
