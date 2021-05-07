@@ -14,7 +14,7 @@ from models.review import Review
 from models.user import User
 
 
-@app.route('/status')
+@app_views.route('/status')
 def status():
     """This returns a JSON status
     """
