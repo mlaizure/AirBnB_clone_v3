@@ -85,7 +85,7 @@ class DBStorage:
         """[Keeps a count of the numbet of objects]
         """
         if cls is not None:
-            obj = models.storage.all(cls.__name__)
+            obj = models.storage.all(cls)
         else:
             obj = models.storage.all()
         return len(obj)
