@@ -4,9 +4,34 @@
 
 from api.v1.views import app_views
 from flask import app, jsonify
+from models import storage
+from models import review
+from models.amenity import Amenity
+from models.city import City
+from models.place import Place
+from models.state import State
+from models.review import Review
+from models.user import User
+
 
 @app.route('/status')
 def status():
     """This returns a JSON status
     """
     return jsonify(status='OK')
+
+
+@app.route('/api/v1/stats')
+def count():
+    """ It returns the count for each object in DB
+    """
+
+    count_dict = {}
+    count_dict["amenities"] = storage.count(Amenity)
+    count_dict["cities"] = storage.count(City)
+    count_dict["places"] = storage.count(Place)
+    count_dict["reviews"] = storage.count(Review)
+    count_dict["users"] = storage.count(User)
+    count_dict["state"] = storage.count(State)
+
+    return count_dict
