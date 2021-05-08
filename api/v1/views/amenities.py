@@ -2,7 +2,7 @@
 """This file retrives an object into a vaild JSON
 """
 
-from models import amenity
+
 from models.amenity import Amenity
 from models import storage
 from flask import abort, jsonify, request
