@@ -33,7 +33,6 @@ def del_state(state_id):
     """
     state_objs = storage.all(State).values()
     for state in state_objs:
-        print(state)
         if state_id == state.id:
             state.delete()
             storage.save()
