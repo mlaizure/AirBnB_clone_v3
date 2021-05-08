@@ -4,34 +4,44 @@
 
 from models.state import State
 from models import storage
-from flask import Flask, abort, jsonify, request
+from flask import abort, jsonify, request
+from api.v1.views import app_views
 
 
-@app_views.route('/states/<state_id>')
-def states(state_id):
+@app_views.route('/states', strict_slashes=False)
+@app_views.route('/states/<state_id>', strict_slashes=False)
+def states(state_id=None):
     """Gets state object
     """
-    obj = storage.all()
-    for id in obj:
-        if state_id == id:
-            State.to_dict()
-        else:
-            abort(404)
+    state_objs = storage.all(State).values()
+    if not state_id:
+        states_list = []
+        for state in state_objs:
+            states_list.append(state.to_dict())
+        return jsonify(states_list)
+
+    for state in state_objs:
+        if state_id == state.id:
+            return jsonify(state.to_dict())
+    abort(404)
 
 
-@app_views.route('/states/<state_id>')
+@app_views.route('/states/<state_id>', methods=['DELETE'],
+                 strict_slashes=False)
 def del_state(state_id):
     """ This deletes a state object
     """
-    obj = storage.all()
-    for id in obj:
-        if state_id == id:
-            State.delete()
-        else:
+    state_objs = storage.all(State).values()
+    for state in state_objs:
+        print(state)
+        if state_id == state.id:
+            state.delete()
+            storage.save()
             return jsonify({}), 200
+    abort(404)
 
 
-@app_views.route('/states')
+@app_views.route('/states', methods=['POST'], strict_slashes=False)
 def post_state():
     """This creates a HTTP body response
         into a message that a dictonary
@@ -48,14 +58,21 @@ def post_state():
         return jsonify(state_obj.to_dict()), 201
 
 
-@app_views.route('/states/<state_id>')
+@app_views.route('/states/<state_id>', methods=['PUT'], strict_slashes=False)
 def put_state(state_id):
-    obj_dict = request.get_json()
+    """This updates a state obj
+    """
+    state_objs = storage.all(State).values()
+    for state in state_objs:
+        if state_id == state.id:
+            obj_dict = request.get_json()
+            if not obj_dict:
+                abort(400, 'Not a JSON')
 
-    if obj_dict is None:
-        abort(400, 'Not a JSON')
-    else:
-        for key in obj_dict:
-            if obj_dict[key] == state_id:
-                storage_obj = storage.all(State)
-    return jsonify(storage_obj), 200
+            forbidden_keys = ['id', 'created_at', 'updated_at']
+            for key, val in obj_dict.items():
+                if key not in forbidden_keys:
+                    setattr(state, key, val)
+            state.save()
+            return jsonify(state.to_dict()), 200
+    abort(404)
