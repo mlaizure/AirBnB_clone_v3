@@ -26,7 +26,7 @@ def get_user(user_id):
     abort(404)
 
 
-@app_views.route('/users/<user_id>', methods-['DELETE'],
+@app_views.route('/users/<user_id>', methods=['DELETE'],
                  strict_slashes=False)
 def delete_user(user_id):
     """This gets the user Object based on the id and deletes it
