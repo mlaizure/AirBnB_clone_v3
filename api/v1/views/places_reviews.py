@@ -18,7 +18,7 @@ def get_review_place(place_id=None):
     if not place:
         abort(404)
 
-    reviews_objs = storage.all(Review).values()
+    review_objs = storage.all(Review).values()
     review_list = []
     for review in review_objs:
         if place_id == review.place_id:
