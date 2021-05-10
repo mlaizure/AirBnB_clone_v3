@@ -58,18 +58,19 @@ def post_review(place_id=None):
     """This Transforms an HTTP request into json
     """
     obj_dict = request.get_json()
-    if obj_dict is None:
-        abort(400, 'Not a JSON')
-    if place_id not in obj_dict:
-        abort(404)
-    if "user_id" not in obj_dict:
-        abort(400, 'Missing user_id')
-    if "text" not in obj_dict:
-        abort(400, 'Missing text')
-    place_id = obj_dict.get("place_id")
     place = storage.get(Place, place_id)
     if not place:
         abort(404)
+    if obj_dict is None:
+        abort(400, 'Not a JSON')
+    if "user_id" not in obj_dict:
+        abort(400, 'Missing user_id')
+    user_id = obj_dict.get("user_id")
+    user = storage.get(User, user_id)
+    if not user:
+        abort(404)
+    if "text" not in obj_dict:
+        abort(400, 'Missing text')
     review_obj = Review(**obj_dict)
     review_obj.place_id = place_id
     review_obj.save()
