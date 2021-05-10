@@ -18,7 +18,6 @@ def get_cities_by_state(state_id=None):
         abort(404)
 
     city_objs = storage.all(City).values()
-    print(city_objs)
     cities_list = []
     for city in city_objs:
         if state_id == city.state_id:
