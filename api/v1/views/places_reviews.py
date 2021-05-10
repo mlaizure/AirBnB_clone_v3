@@ -3,7 +3,6 @@
 """
 
 from models.review import Review
-import json
 from models.user import User
 from models.place import Place
 from models import storage
@@ -19,12 +18,12 @@ def get_review_place(place_id=None):
     if not place:
         abort(404)
 
-    place_objs = storage.all(Place).values()
-    place_list = []
-    for item in place_objs:
-        if place_id == item.id:
-            place_list.append(item.to_dict())
-    return jsonify(place_list)
+    reviews_objs = storage.all(Review).values()
+    review_list = []
+    for review in review_objs:
+        if place_id == review.place_id:
+            review_list.append(review.to_dict())
+    return jsonify(review_list)
     abort(404)
 
 
@@ -59,15 +58,16 @@ def post_review(place_id=None):
     """This Transforms an HTTP request into json
     """
     obj_dict = request.get_json()
-    if place_id not in obj_dict:
-        abort(404)
     if obj_dict is None:
         abort(400, 'Not a JSON')
+    if place_id not in obj_dict:
+        abort(404)
     if "user_id" not in obj_dict:
         abort(400, 'Missing user_id')
     if "text" not in obj_dict:
         abort(400, 'Missing text')
-    place = storage.get(User, json.get('user_id'))
+    place_id = obj_dict.get("place_id")
+    place = storage.get(Place, place_id)
     if not place:
         abort(404)
     review_obj = Review(**obj_dict)
