@@ -10,7 +10,7 @@ from flask import abort, jsonify, request
 
 @app_views.route('/users', strict_slashes=False)
 @app_views.route('/users/<user_id>', strict_slashes=False)
-def get_user(user_id):
+def get_user(user_id=None):
     """This gets the user Object from the main
     """
     user_objs = storage.all(User).values()
