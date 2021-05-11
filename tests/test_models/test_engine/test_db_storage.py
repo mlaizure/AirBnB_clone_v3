@@ -78,10 +78,8 @@ class TestDb_Storage(unittest.TestCase):
         for item in obj_dict.values():
             object_id = item.id
             obj = models.storage.get(State, object_id)
-
-            self.assertIsInstance(obj, State)
-
-            self.assertEqual(object_id, obj.id)
+        self.assertIsInstance(obj, State)
+        self.assertEqual(object_id, obj.id)
 
     def test_count(self):
         """ This tests the count method from db_stroage
