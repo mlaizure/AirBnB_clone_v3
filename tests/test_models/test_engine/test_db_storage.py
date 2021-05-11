@@ -74,13 +74,12 @@ class TestDb_Storage(unittest.TestCase):
     def test_get(self):
         """This tests the get method from db_storge.py
         """
-        obj_dict = models.storage.all(State)
-        obj = {}
-        for item in obj_dict.values():
-            object_id = item.id
-            obj = models.storage.get(State, object_id)
-        self.assertIsInstance(obj, State)
-        self.assertEqual(object_id, obj.id)
+        new_state = State(name="NewState")
+        new_state.save()
+        new_state_id = new_state.id
+        new_state_get = models.storage.get(State, new_state_id)
+        self.assertIsInstance(new_state_get, State)
+        self.assertEqual(new_state_id, new_state_get.id)
 
     def test_count(self):
         """ This tests the count method from db_stroage

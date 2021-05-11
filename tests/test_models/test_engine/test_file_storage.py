@@ -6,6 +6,7 @@ Contains the TestFileStorageDocs classes
 from datetime import datetime
 import inspect
 import models
+import random
 from models.engine import file_storage
 from models.amenity import Amenity
 from models.base_model import BaseModel
@@ -76,13 +77,11 @@ class TestFile_Storage(unittest.TestCase):
         """This tests the get method from db_storge.py
         """
         obj_dict = models.storage.all(State)
-        obj = {}
-        for item in obj_dict.values():
-            object_id = item.id
-            obj = models.storage.get(State, object_id)
-
-        self.assertIsInstance(obj, State)
-        self.assertEqual(object_id, obj.id)
+        random_state = random.choice(list(obj_dict.values()))
+        random_state_id = random_state.id
+        state_get = models.storage.get(State, random_state_id)
+        self.assertIsInstance(state_get, State)
+        self.assertEqual(random_state_id, state_get.id)
 
     def test_count(self):
         """ This tests the count method from db_stroage
