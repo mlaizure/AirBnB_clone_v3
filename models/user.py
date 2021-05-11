@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 """ holds class User"""
 import models
+import hashlib
 from models.base_model import BaseModel, Base
 from os import getenv
 import sqlalchemy
@@ -26,4 +27,6 @@ class User(BaseModel, Base):
 
     def __init__(self, *args, **kwargs):
         """initializes user"""
+        if kwargs is not None and 'password' in kwargs:
+            kwargs['password'] = hashlib.md5(kwargs.get('password').encode()).digesthex()
         super().__init__(*args, **kwargs)
