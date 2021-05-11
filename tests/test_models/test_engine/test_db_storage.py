@@ -75,6 +75,7 @@ class TestDb_Storage(unittest.TestCase):
         """This tests the get method from db_storge.py
         """
         obj_dict = models.storage.all(State)
+        obj = {}
         for item in obj_dict.values():
             object_id = item.id
             obj = models.storage.get(State, object_id)
